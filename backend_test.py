@@ -76,7 +76,7 @@ class Give2EatAPITester:
             200,
             data=food_data
         )
-        return response.get('id') if success else None
+        return response.get('_id') if success else None
 
     def test_get_food_posts(self):
         """Test getting all food posts"""
