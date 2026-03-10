@@ -2,7 +2,7 @@ import axios from 'axios';
 import { supabase } from './supabase';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BACKEND || process.env.REACT_APP_BACKEND_URL + '/api',
+  baseURL: (process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001') + '/api',
 });
 
 // Add a request interceptor to include the Supabase token

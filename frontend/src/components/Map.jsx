@@ -16,7 +16,7 @@ const center = {
 const Map = ({ markers, onMarkerClick }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.VITE_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
   });
 
   const [map, setMap] = React.useState(null);
@@ -24,9 +24,14 @@ const Map = ({ markers, onMarkerClick }) => {
 
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+    if(markers && markers.length > 0) {
+        markers.forEach(marker => {
+            bounds.extend(marker.position);
+        });
+        map.fitBounds(bounds);
+    }
     setMap(map);
-  }, []);
+  }, [markers]);
 
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
