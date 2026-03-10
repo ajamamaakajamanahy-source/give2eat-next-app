@@ -26,6 +26,10 @@ async def create_food_post(post: FoodPostModel, user=Depends(verify_token)):
 @router.get("/", response_model=List[FoodPostModel])
 async def get_food_posts():
     posts = await db.food_posts.find({"status": "active"}).to_list(100)
+    # Convert ObjectId to string for proper serialization
+    for post in posts:
+        if post.get("_id"):
+            post["_id"] = str(post["_id"])
     return posts
 
 @router.get("/{id}", response_model=FoodPostModel)
