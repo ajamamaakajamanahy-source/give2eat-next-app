@@ -1,94 +1,163 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { ArrowRight, Leaf, MapPin, Heart } from 'lucide-react';
+import { ArrowRight, Leaf, MapPin, Heart, ShieldCheck, Zap } from 'lucide-react';
+import Hero3D from '@/components/Hero3D'; // We'll assume this is created as planned
 
 const Landing = () => {
   return (
-    <div className="flex flex-col items-center">
-      {/* Hero Section */}
-      <section className="relative w-full py-24 md:py-32 lg:py-40 bg-gradient-to-b from-primary/5 to-transparent overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
-        <div className="container px-4 md:px-6 relative z-10 text-center">
+    <div className="relative w-full overflow-hidden">
+      
+      {/* 1. IMMERSIVE HERO SECTION */}
+      <section className="relative w-full h-[100vh] flex items-center justify-center overflow-hidden">
+        {/* 3D Background Layer */}
+        <Suspense fallback={null}>
+            <Hero3D />
+        </Suspense>
+
+        {/* Hero Content Layer */}
+        <div className="relative z-10 container px-4 md:px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 font-serif">
-              Share Food, <span className="text-primary">Share Hope</span>.
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="text-xs font-mono tracking-widest uppercase text-white/70">Live Network Active</span>
+            </div>
+
+            <h1 className="text-5xl md:text-8xl font-bold tracking-tighter mb-6 font-serif bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/50 drop-shadow-2xl">
+              Future of <br/> Food Sharing
             </h1>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl font-sans mb-8">
-              Give2Eat connects neighbors with excess food to those who need it. 
-              Reduce waste, build community, and make a difference today.
+            
+            <p className="mx-auto max-w-[600px] text-white/60 md:text-xl font-light mb-10 leading-relaxed">
+              Connect surplus with need in a decentralized, high-speed network. 
+              Zero waste. Zero friction. 100% Impact.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" className="rounded-full text-lg px-8 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all">
-                Find Food Nearby <MapPin className="ml-2 h-4 w-4" />
+
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
+              <Button size="lg" className="h-14 rounded-full text-lg px-10 bg-white text-black hover:bg-white/90 shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all hover:scale-105 border-0">
+                Start Exploring
               </Button>
-              <Button variant="outline" size="lg" className="rounded-full text-lg px-8 border-primary text-primary hover:bg-primary/10">
-                Donate Now <Heart className="ml-2 h-4 w-4" />
+              <Button variant="outline" size="lg" className="h-14 rounded-full text-lg px-10 border-white/20 bg-black/20 backdrop-blur-md hover:bg-white/10 text-white transition-all hover:scale-105">
+                Join Network <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 flex flex-col items-center gap-2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <span className="text-[10px] uppercase tracking-[0.2em]">Scroll to Explore</span>
+          <div className="w-px h-12 bg-gradient-to-b from-transparent via-white/50 to-transparent"></div>
+        </motion.div>
       </section>
 
-      {/* How it Works */}
-      <section className="w-full py-20 bg-white/50 backdrop-blur-sm">
+
+      {/* 2. BENTO GRID 'HOW IT WORKS' */}
+      <section className="w-full py-32 bg-black relative z-20">
         <div className="container px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 font-serif">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard 
-              icon={<Leaf className="h-10 w-10 text-secondary" />}
-              title="Post Food"
-              description="Donors snap a photo and post details in seconds."
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="mb-20"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold font-serif mb-6">System Architecture</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl">A three-step protocol to redistribute resources efficiently.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+            {/* Card 1: Large Span */}
+            <BentoCard 
+              className="md:col-span-2 bg-gradient-to-br from-green-900/20 to-black border-green-500/20"
+              icon={<Zap className="w-8 h-8 text-green-400" />}
+              title="Instant Broadcast"
+              desc="Donors post food in <10s. Our geo-algorithm instantly notifies the nearest receivers."
             />
-            <FeatureCard 
-              icon={<MapPin className="h-10 w-10 text-primary" />}
-              title="Find Nearby"
-              description="Receivers locate food within 15km on our real-time map."
+            
+            {/* Card 2: Vertical */}
+            <BentoCard 
+              className="md:row-span-2 bg-gradient-to-br from-indigo-900/20 to-black border-indigo-500/20"
+              icon={<MapPin className="w-8 h-8 text-indigo-400" />}
+              title="Live Tracking"
+              desc="Real-time map overlay with distance calculation and verified pickup zones. Watch the network pulse in real-time."
             />
-            <FeatureCard 
-              icon={<Heart className="h-10 w-10 text-accent" />}
-              title="Collect & Rate"
-              description="Pick up the food and leave a rating to build trust."
+
+            {/* Card 3: Standard */}
+            <BentoCard 
+              className="bg-zinc-900/50"
+              icon={<ShieldCheck className="w-8 h-8 text-white" />}
+              title="Trust Protocol"
+              desc="Community verification and rating system ensures safety."
+            />
+
+            {/* Card 4: Standard */}
+            <BentoCard 
+              className="bg-zinc-900/50"
+              icon={<Leaf className="w-8 h-8 text-white" />}
+              title="Zero Waste"
+              desc="Analytics dashboard to track your environmental impact."
             />
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="w-full py-20 bg-secondary/5">
-        <div className="container px-4 md:px-6 text-center">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <Stat number="10k+" label="Meals Shared" />
-            <Stat number="5k+" label="Active Donors" />
-            <Stat number="50k" label="kg Food Saved" />
-            <Stat number="100%" label="Community Driven" />
+      {/* 3. PARALLAX STATS SECTION */}
+      <section className="w-full py-40 relative bg-zinc-950 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-fixed opacity-10 grayscale mix-blend-overlay"></div>
+        <div className="container px-4 md:px-6 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+            <Stat number="10k+" label="Meals Redistributed" delay={0} />
+            <Stat number="500+" label="Active Nodes" delay={0.2} />
+            <Stat number="50t" label="Carbon Offset" delay={0.4} />
+            <Stat number="24/7" label="Network Uptime" delay={0.6} />
           </div>
         </div>
       </section>
+
     </div>
   );
 };
 
-const FeatureCard = ({ icon, title, description }) => (
-  <Card className="text-center hover:scale-105 transition-transform duration-300 border-none shadow-lg bg-white/80">
-    <CardContent className="pt-6 flex flex-col items-center">
-      <div className="mb-4 p-3 bg-muted rounded-full">{icon}</div>
-      <h3 className="text-xl font-semibold mb-2 font-serif">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </CardContent>
-  </Card>
+const BentoCard = ({ className, icon, title, desc }) => (
+  <motion.div 
+    whileHover={{ scale: 1.02 }}
+    className={`p-8 rounded-3xl border border-white/10 backdrop-blur-sm flex flex-col justify-between overflow-hidden relative group ${className}`}
+  >
+    <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 transition-opacity duration-500">
+      <ArrowRight className="-rotate-45 w-6 h-6" />
+    </div>
+    
+    <div className="p-3 bg-white/5 w-fit rounded-2xl mb-4 backdrop-blur-md border border-white/5">
+      {icon}
+    </div>
+    
+    <div>
+      <h3 className="text-2xl font-bold font-serif mb-3 text-white">{title}</h3>
+      <p className="text-muted-foreground leading-relaxed">{desc}</p>
+    </div>
+  </motion.div>
 );
 
-const Stat = ({ number, label }) => (
-  <div className="flex flex-col items-center">
-    <h3 className="text-4xl font-bold text-primary font-serif">{number}</h3>
-    <p className="text-muted-foreground font-medium">{label}</p>
-  </div>
+const Stat = ({ number, label, delay }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay, duration: 0.8 }}
+    className="flex flex-col items-center"
+  >
+    <h3 className="text-5xl md:text-7xl font-bold text-white mb-2 font-serif tracking-tight">{number}</h3>
+    <p className="text-sm font-mono uppercase tracking-widest text-white/50">{label}</p>
+  </motion.div>
 );
 
 export default Landing;

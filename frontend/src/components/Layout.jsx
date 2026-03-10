@@ -1,28 +1,47 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { UtensilsCrossed } from 'lucide-react';
+import { UtensilsCrossed, Menu } from 'lucide-react';
 
 const Navbar = () => {
   return (
-    <nav className="fixed w-full z-50 top-0 left-0 border-b border-white/20 bg-white/70 backdrop-blur-md">
+    <nav className="fixed w-full z-50 top-0 left-0 border-b border-white/5 bg-background/50 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="p-2 bg-primary rounded-full text-white">
-              <UtensilsCrossed size={20} />
+        <div className="flex justify-between items-center h-20">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="p-2.5 bg-gradient-to-br from-green-400 to-green-600 rounded-xl text-black shadow-[0_0_15px_rgba(74,222,128,0.3)] group-hover:shadow-[0_0_25px_rgba(74,222,128,0.5)] transition-all duration-300">
+              <UtensilsCrossed size={22} strokeWidth={2.5} />
             </div>
-            <span className="font-serif font-bold text-xl tracking-tight text-foreground">Give2Eat</span>
+            <span className="font-serif font-bold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+              Give2Eat
+            </span>
           </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/feed" className="text-sm font-medium hover:text-primary transition-colors">Find Food</Link>
-            <Link to="/donate" className="text-sm font-medium hover:text-primary transition-colors">Donate Food</Link>
+          
+          <div className="hidden md:flex items-center gap-8">
+            {['Feed', 'Donate', 'Impact'].map((item) => (
+              <Link 
+                key={item}
+                to={`/${item.toLowerCase()}`} 
+                className="text-sm font-medium text-muted-foreground hover:text-white transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-white after:transition-all hover:after:w-full"
+              >
+                {item}
+              </Link>
+            ))}
+            
+            <div className="h-6 w-px bg-white/10 mx-2"></div>
+
             <Link to="/login">
-              <Button variant="outline" size="sm" className="rounded-full">Log In</Button>
+              <Button variant="ghost" className="text-sm hover:bg-white/5 rounded-full px-6">Log In</Button>
             </Link>
             <Link to="/signup">
-              <Button size="sm" className="rounded-full shadow-lg hover:shadow-primary/25">Get Started</Button>
+              <Button className="rounded-full bg-white text-black hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.2)] px-8 font-bold transition-transform active:scale-95">
+                Join Now
+              </Button>
             </Link>
+          </div>
+
+          <div className="md:hidden">
+            <Button variant="ghost" size="icon"><Menu /></Button>
           </div>
         </div>
       </div>
@@ -30,28 +49,28 @@ const Navbar = () => {
   );
 };
 
-const Footer = () => {
-  return (
-    <footer className="bg-muted/30 py-12 mt-auto border-t border-white/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-sm text-muted-foreground font-sans">
-          &copy; {new Date().getFullYear()} Give2Eat. Connecting communities, one meal at a time.
-        </p>
-      </div>
-    </footer>
-  );
-};
-
 const Layout = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-background font-sans selection:bg-primary/20">
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-40" 
+    <div className="min-h-screen flex flex-col bg-black text-white font-sans selection:bg-green-500/30 overflow-x-hidden dark">
+      {/* Cinematic Noise Overlay */}
+      <div className="fixed inset-0 z-[60] pointer-events-none opacity-[0.03] mix-blend-overlay" 
            style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }}></div>
+      
+      {/* Ambient Background Glows */}
+      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-green-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse"></div>
+      <div className="fixed bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse delay-700"></div>
+
       <Navbar />
+      
       <main className="flex-grow pt-20 z-10 relative">
         <Outlet />
       </main>
-      <Footer />
+      
+      <footer className="border-t border-white/5 bg-black/50 backdrop-blur-lg py-12 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 text-center text-muted-foreground text-sm">
+          <p>© 2024 Give2Eat. Redefining Charity with Tech.</p>
+        </div>
+      </footer>
     </div>
   );
 };
