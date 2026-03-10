@@ -2,34 +2,44 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { MapPin, Image as ImageIcon, Clock, Plus } from 'lucide-react';
+import { MapPin, Image as ImageIcon, Clock, Plus, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import api from '@/lib/api';
+import { toast } from 'sonner';
 
 const DonorDashboard = () => {
-  const [posts, setPosts] = useState([]); // Mock posts for UI
   const [isPosting, setIsPosting] = useState(false);
+  const queryClient = useQueryClient();
 
-  // Mock form state
-  const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
-  const [qty, setQty] = useState('');
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    quantity: '',
+    pickup_time: new Date().toISOString(), // Simplified for MVP
+    address: '123 Main St', // Placeholder
+    latitude: 40.7128,
+    longitude: -74.0060,
+  });
+
+  const createPostMutation = useMutation({
+    mutationFn: (newPost) => api.post('/food/', newPost),
+    onSuccess: () => {
+      toast.success('Food posted successfully!');
+      setIsPosting(false);
+      setFormData({ ...formData, title: '', description: '', quantity: '' });
+      queryClient.invalidateQueries({ queryKey: ['food'] });
+    },
+    onError: (error) => {
+      toast.error('Failed to post food');
+      console.error(error);
+    }
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newPost = {
-      id: Date.now(),
-      title,
-      description: desc,
-      quantity: qty,
-      image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=500', // Placeholder
-      status: 'active',
-      pickupTime: '2h',
-    };
-    setPosts([newPost, ...posts]);
-    setIsPosting(false);
-    setTitle('');
-    setDesc('');
-    setQty('');
+    createPostMutation.mutate(formData);
   };
 
   return (
@@ -55,10 +65,24 @@ const DonorDashboard = () => {
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2">
-                  <Input placeholder="Food Title (e.g., 5 Pasta Boxes)" value={title} onChange={e => setTitle(e.target.value)} required />
-                  <Input placeholder="Quantity (e.g., 2kg)" value={qty} onChange={e => setQty(e.target.value)} required />
+                  <Input 
+                    placeholder="Food Title (e.g., 5 Pasta Boxes)" 
+                    value={formData.title} 
+                    onChange={e => setFormData({...formData, title: e.target.value})} 
+                    required 
+                  />
+                  <Input 
+                    placeholder="Quantity (e.g., 2kg)" 
+                    value={formData.quantity} 
+                    onChange={e => setFormData({...formData, quantity: e.target.value})} 
+                    required 
+                  />
                 </div>
-                <Input placeholder="Description (ingredients, allergens...)" value={desc} onChange={e => setDesc(e.target.value)} />
+                <Input 
+                  placeholder="Description (ingredients, allergens...)" 
+                  value={formData.description} 
+                  onChange={e => setFormData({...formData, description: e.target.value})} 
+                />
                 
                 <div className="flex gap-4">
                   <Button type="button" variant="outline" className="flex-1 gap-2">
@@ -67,43 +91,20 @@ const DonorDashboard = () => {
                   <Button type="button" variant="outline" className="flex-1 gap-2">
                     <MapPin size={16} /> Set Location
                   </Button>
-                  <Button type="button" variant="outline" className="flex-1 gap-2">
-                    <Clock size={16} /> Pickup Time
-                  </Button>
                 </div>
 
-                <Button type="submit" className="w-full rounded-full bg-primary hover:bg-primary/90">Post Donation</Button>
+                <Button type="submit" className="w-full rounded-full bg-primary hover:bg-primary/90" disabled={createPostMutation.isPending}>
+                  {createPostMutation.isPending ? <Loader2 className="animate-spin" /> : 'Post Donation'}
+                </Button>
               </form>
             </CardContent>
           </Card>
         </motion.div>
       )}
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {posts.length === 0 ? (
-          <div className="col-span-full text-center py-20 text-muted-foreground bg-muted/20 rounded-xl border border-dashed border-muted-foreground/20">
-            <p>No active donations yet. Start sharing!</p>
-          </div>
-        ) : (
-          posts.map(post => (
-            <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-all duration-300">
-              <div className="h-48 bg-gray-200 relative">
-                <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
-                <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                  {post.status}
-                </span>
-              </div>
-              <CardContent className="p-4">
-                <h3 className="font-serif font-bold text-lg mb-1">{post.title}</h3>
-                <p className="text-sm text-muted-foreground mb-3">{post.description}</p>
-                <div className="flex justify-between items-center text-sm font-medium">
-                  <span className="flex items-center gap-1 text-primary"><Clock size={14} /> {post.pickupTime}</span>
-                  <span className="bg-secondary/10 text-secondary px-2 py-1 rounded text-xs">{post.quantity}</span>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        )}
+      {/* List of active donations would go here, fetched via useQuery */}
+      <div className="text-center py-20 text-muted-foreground bg-muted/20 rounded-xl border border-dashed border-muted-foreground/20">
+        <p>Your active donations will appear here.</p>
       </div>
     </div>
   );

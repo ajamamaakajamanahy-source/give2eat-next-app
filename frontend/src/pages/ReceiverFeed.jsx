@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Clock, Lock, Unlock } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { MapPin, Lock, Unlock, Loader2 } from 'lucide-react';
 import AdOverlay from '@/components/AdOverlay';
 import Map from '@/components/Map';
-import { motion } from 'framer-motion';
-
-// Mock Data
-const MOCK_FOODS = [
-  { id: 1, title: 'Fresh Sourdough Bread', distance: '0.5km', image: 'https://images.unsplash.com/photo-1585476644321-b976214b2e60?auto=format&fit=crop&q=80&w=500', lat: 40.7128, lng: -74.0060, locked: true },
-  { id: 2, title: 'Vegetable Soup (5 Liters)', distance: '1.2km', image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=500', lat: 40.7200, lng: -74.0100, locked: true },
-  { id: 3, title: 'Assorted Pastries', distance: '2.5km', image: 'https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&q=80&w=500', lat: 40.7300, lng: -73.9900, locked: true },
-];
+import { useQuery } from '@tanstack/react-query';
+import api from '@/lib/api';
 
 const ReceiverFeed = () => {
-  const [view, setView] = useState('list'); // 'list' or 'map'
-  const [foods, setFoods] = useState(MOCK_FOODS);
+  const [view, setView] = useState('list');
   const [selectedFood, setSelectedFood] = useState(null);
   const [showAd, setShowAd] = useState(false);
+  const [unlockedIds, setUnlockedIds] = useState([]);
+
+  // Fetch food posts
+  const { data: foods, isLoading } = useQuery({
+    queryKey: ['food'],
+    queryFn: async () => {
+      const res = await api.get('/food/');
+      return res.data;
+    }
+  });
 
   const handleUnlockClick = (food) => {
     setSelectedFood(food);
@@ -26,12 +29,19 @@ const ReceiverFeed = () => {
 
   const handleAdComplete = () => {
     if (selectedFood) {
-      setFoods(foods.map(f => f.id === selectedFood.id ? { ...f, locked: false } : f));
-      // In a real app, verify with backend here
+      setUnlockedIds([...unlockedIds, selectedFood._id]);
     }
     setShowAd(false);
     setSelectedFood(null);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="container px-4 py-8 max-w-5xl mx-auto h-[calc(100vh-80px)]">
@@ -60,48 +70,59 @@ const ReceiverFeed = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
         {/* List View */}
         <div className={`col-span-1 lg:col-span-1 space-y-4 overflow-y-auto pb-20 ${view === 'map' ? 'hidden lg:block' : ''}`}>
-          {foods.map((food) => (
-            <Card key={food.id} className="hover:shadow-md transition-shadow cursor-pointer border-none bg-white/80">
-              <div className="flex gap-4 p-4">
-                <img src={food.image} alt={food.title} className="w-24 h-24 rounded-lg object-cover bg-gray-200" />
-                <div className="flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-bold font-serif text-lg leading-tight">{food.title}</h3>
-                    <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-                      <MapPin size={12} /> {food.distance} away
-                    </p>
+          {foods?.map((food) => {
+             const isUnlocked = unlockedIds.includes(food._id);
+             return (
+              <Card key={food._id} className="hover:shadow-md transition-shadow cursor-pointer border-none bg-white/80">
+                <div className="flex gap-4 p-4">
+                  <div className="w-24 h-24 rounded-lg bg-gray-200 overflow-hidden">
+                    {food.image_url ? (
+                      <img src={food.image_url} alt={food.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                        No Img
+                      </div>
+                    )}
                   </div>
-                  {food.locked ? (
-                    <Button 
-                      size="sm" 
-                      variant="secondary" 
-                      className="w-full mt-2 rounded-full text-xs h-8 gap-2 bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground"
-                      onClick={() => handleUnlockClick(food)}
-                    >
-                      <Lock size={12} /> Watch Ad to Unlock
-                    </Button>
-                  ) : (
-                    <Button 
-                      size="sm" 
-                      className="w-full mt-2 rounded-full text-xs h-8 gap-2 bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      <Unlock size={12} /> Location Revealed
-                    </Button>
-                  )}
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-bold font-serif text-lg leading-tight">{food.title}</h3>
+                      <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                        <MapPin size={12} /> {food.address || 'Nearby'}
+                      </p>
+                    </div>
+                    {!isUnlocked ? (
+                      <Button 
+                        size="sm" 
+                        variant="secondary" 
+                        className="w-full mt-2 rounded-full text-xs h-8 gap-2 bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground"
+                        onClick={() => handleUnlockClick(food)}
+                      >
+                        <Lock size={12} /> Watch Ad to Unlock
+                      </Button>
+                    ) : (
+                      <Button 
+                        size="sm" 
+                        className="w-full mt-2 rounded-full text-xs h-8 gap-2 bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        <Unlock size={12} /> Location Revealed
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            )
+          })}
         </div>
 
         {/* Map View */}
         <div className={`col-span-1 lg:col-span-2 h-[500px] lg:h-auto rounded-2xl overflow-hidden shadow-inner border border-border/50 ${view === 'list' ? 'hidden lg:block' : ''}`}>
           <Map 
-            markers={foods.map(f => ({
-              id: f.id, 
-              position: { lat: f.lat, lng: f.lng }, 
+            markers={foods?.map(f => ({
+              id: f._id, 
+              position: { lat: f.latitude, lng: f.longitude }, 
               title: f.title,
-              description: f.distance
+              description: f.description
             }))} 
           />
         </div>
