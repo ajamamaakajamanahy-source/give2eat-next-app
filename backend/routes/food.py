@@ -40,6 +40,11 @@ async def get_food_post(id: str):
     post = await db.food_posts.find_one({"_id": ObjectId(id)})
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Convert ObjectId to string for proper serialization
+    if post.get("_id"):
+        post["_id"] = str(post["_id"])
+    
     return post
 
 @router.post("/{id}/unlock")
