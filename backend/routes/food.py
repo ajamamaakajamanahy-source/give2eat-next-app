@@ -16,6 +16,11 @@ async def create_food_post(post: FoodPostModel, user=Depends(verify_token)):
     
     new_post = await db.food_posts.insert_one(post_dict)
     created_post = await db.food_posts.find_one({"_id": new_post.inserted_id})
+    
+    # Convert ObjectId to string for proper serialization
+    if created_post:
+        created_post["_id"] = str(created_post["_id"])
+    
     return created_post
 
 @router.get("/", response_model=List[FoodPostModel])
