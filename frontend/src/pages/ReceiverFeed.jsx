@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { MapPin, Lock, Unlock, Loader2, List, Map as MapIcon } from 'lucide-react';
+import { MapPin, Lock, Unlock, Loader2, List, Map as MapIcon, Image as LucideImage } from 'lucide-react';
 import AdOverlay from '@/components/AdOverlay';
 import Map from '@/components/Map';
 import { useQuery } from '@tanstack/react-query';
@@ -92,7 +92,7 @@ const ReceiverFeed = () => {
                         <img src={food.image_url} alt={food.title} className="w-full h-full object-cover" />
                         ) : (
                         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-white/5 to-transparent text-white/20">
-                            <ImageIcon size={24} />
+                            <LucideImage size={24} />
                         </div>
                         )}
                     </div>
@@ -150,24 +150,5 @@ const ReceiverFeed = () => {
     </div>
   );
 };
-
-// Helper for image icon
-const ImageIcon = ({ size }) => (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    >
-      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-      <circle cx="9" cy="9" r="2" />
-      <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-    </svg>
-)
 
 export default ReceiverFeed;

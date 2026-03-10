@@ -38,55 +38,66 @@ const AdOverlay = ({ isOpen, onClose, onComplete }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl"
       >
-        <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-2xl relative overflow-hidden">
-          <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-            <X size={24} />
-          </button>
-          
-          <div className="text-center space-y-6 py-8">
-            <h2 className="text-2xl font-serif font-bold text-gray-900">
-              Watch to Unlock Location
-            </h2>
+        <div className="w-full max-w-md p-1 rounded-3xl bg-gradient-to-br from-white/10 to-transparent shadow-2xl">
+          <div className="bg-[#0A0A0A] rounded-[22px] p-6 relative overflow-hidden border border-white/5">
+            <button onClick={onClose} className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors">
+              <X size={24} />
+            </button>
             
-            {!isPlaying && !isCompleted && (
-              <div className="bg-gray-100 rounded-xl h-48 flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors" onClick={handleStart}>
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Play className="w-8 h-8 text-primary ml-1" fill="currentColor" />
+            <div className="text-center space-y-8 py-8">
+              <div>
+                <h2 className="text-2xl font-serif font-bold text-white mb-2">
+                  Unlock Location
+                </h2>
+                <p className="text-white/50 text-sm">Support the network by watching this short message.</p>
+              </div>
+              
+              {!isPlaying && !isCompleted && (
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-white/5 border border-white/10 rounded-2xl h-48 flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all group" 
+                  onClick={handleStart}
+                >
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:scale-110 transition-transform">
+                      <Play className="w-6 h-6 ml-1" fill="currentColor" />
+                    </div>
+                    <span className="text-sm font-medium text-white/70 group-hover:text-white">Start Ad (5s)</span>
                   </div>
-                  <span className="text-sm font-medium text-gray-600">Click to watch ad (5s)</span>
-                </div>
-              </div>
-            )}
-
-            {isPlaying && (
-              <div className="bg-gray-900 rounded-xl h-48 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-4xl font-mono font-bold text-white">{timeLeft}s</span>
-                </div>
-                <div className="absolute bottom-0 left-0 h-1 bg-primary transition-all duration-1000 ease-linear" style={{ width: `${(timeLeft / 5) * 100}%` }} />
-              </div>
-            )}
-
-            {isCompleted && (
-              <div className="bg-green-50 rounded-xl h-48 flex items-center justify-center flex-col animate-in zoom-in duration-300">
-                <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
-                <p className="text-lg font-medium text-green-700">Ad Completed!</p>
-              </div>
-            )}
-
-            <div className="flex justify-center pt-4">
-              {isCompleted ? (
-                <Button onClick={handleComplete} size="lg" className="w-full rounded-full bg-green-600 hover:bg-green-700">
-                  Reveal Location
-                </Button>
-              ) : (
-                <p className="text-xs text-muted-foreground">
-                  Watching helps keep Give2Eat free for everyone.
-                </p>
+                </motion.div>
               )}
+
+              {isPlaying && (
+                <div className="bg-black rounded-2xl h-48 flex items-center justify-center relative overflow-hidden border border-white/10">
+                  <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <span className="text-6xl font-mono font-bold text-white tracking-widest">{timeLeft}</span>
+                  </div>
+                  {/* Progress Bar Background */}
+                  <div className="absolute bottom-0 left-0 h-1 bg-green-500 shadow-[0_0_10px_#22c55e] transition-all duration-1000 ease-linear" style={{ width: `${((5 - timeLeft) / 5) * 100}%` }} />
+                </div>
+              )}
+
+              {isCompleted && (
+                <div className="bg-green-500/10 border border-green-500/20 rounded-2xl h-48 flex items-center justify-center flex-col animate-in zoom-in duration-300">
+                  <CheckCircle className="w-16 h-16 text-green-400 mb-4 drop-shadow-[0_0_10px_rgba(74,222,128,0.5)]" />
+                  <p className="text-lg font-medium text-green-400">Thank You!</p>
+                </div>
+              )}
+
+              <div className="flex justify-center pt-2">
+                {isCompleted ? (
+                  <Button onClick={handleComplete} size="lg" className="w-full rounded-full bg-white text-black hover:bg-white/90 font-bold h-12">
+                    Reveal Address Now
+                  </Button>
+                ) : (
+                  <p className="text-[10px] uppercase tracking-widest text-white/30">
+                    Powered by Give2Eat Ad Network
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
