@@ -32,46 +32,46 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh] px-4">
+    <div className="flex items-center justify-center min-h-[80vh] px-4 relative z-20">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5, ease: "circOut" }}
         className="w-full max-w-md"
       >
-        <Card className="shadow-2xl border-white/20 bg-white/80 backdrop-blur-md">
+        <Card className="shadow-2xl border-white/10 bg-black/60 backdrop-blur-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl text-primary font-serif">Welcome Back</CardTitle>
-            <CardDescription>Enter your email to sign in or create an account</CardDescription>
+            <CardTitle className="text-4xl text-white font-serif mb-2">Welcome Back</CardTitle>
+            <CardDescription className="text-white/50">Enter your email to sign in or create an account</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
+            <form onSubmit={handleLogin} className="space-y-6">
               <Input
                 type="email"
                 placeholder="hello@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-12 text-lg"
+                className="h-14 text-lg bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-green-500/50 rounded-xl"
               />
-              <Button type="submit" className="w-full h-12 text-lg rounded-full" disabled={loading}>
+              <Button type="submit" className="w-full h-14 text-lg rounded-full bg-white text-black hover:bg-gray-200 transition-all font-bold" disabled={loading}>
                 {loading ? 'Sending Magic Link...' : 'Send Magic Link'}
               </Button>
-              {message && <p className="text-center text-sm text-muted-foreground mt-4">{message}</p>}
+              {message && <p className="text-center text-sm text-green-400 mt-4">{message}</p>}
             
-              <div className="relative my-4">
+              <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
+                  <span className="w-full border-t border-white/10" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                  <span className="bg-black px-2 text-white/30">Or continue with</span>
                 </div>
               </div>
 
               <Button 
                 type="button" 
                 variant="outline" 
-                className="w-full h-12 text-lg rounded-full border-primary text-primary hover:bg-primary/10"
+                className="w-full h-14 text-lg rounded-full border-white/20 text-white hover:bg-white/10"
                 onClick={handleDemoLogin}
               >
                 Demo Login (Skip Auth)
