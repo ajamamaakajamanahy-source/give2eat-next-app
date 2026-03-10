@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Manrope:wght@300..800&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Manrope:wght@200..800&family=JetBrains+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,75 +6,36 @@
 
 @layer base {
   :root {
-    /* Terracotta - Primary */
-    --primary: 12 76% 61%;
-    --primary-foreground: 60 9.1% 97.8%;
+    /* Cosmic Luxury - Dark Mode Default */
+    --background: 240 10% 4%; /* #0A0A0B */
+    --foreground: 0 0% 98%;
 
-    /* Sage Green - Secondary */
-    --secondary: 173 58% 39%;
-    --secondary-foreground: 60 9.1% 97.8%;
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
 
-    /* Sunray Yellow - Accent */
-    --accent: 43 74% 66%;
-    --accent-foreground: 24 9.8% 10%;
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    /* Warm Cream - Background */
-    --background: 43 51% 91%; /* #F4F1DE */
-    --foreground: 20 14% 4%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
 
-    /* Surface - Card */
-    --card: 0 0% 100%;
-    --card-foreground: 20 14% 4%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
 
-    /* Muted */
-    --muted: 30 20% 90%;
-    --muted-foreground: 25 5% 45%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
 
-    /* Popover */
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14% 4%;
+    --accent: 266 100% 64%; /* Electric Purple/Indigo */
+    --accent-foreground: 0 0% 98%;
 
-    /* Destructive */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
 
-    /* Border/Input/Ring */
-    --border: 30 10% 85%;
-    --input: 30 10% 85%;
-    --ring: 12 76% 61%;
-    
-    --radius: 0.75rem;
-  }
- 
-  .dark {
-    /* Dark Theme */
-    --background: 20 14% 4%; /* #1A1A1A */
-    --foreground: 60 9.1% 97.8%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 240 5% 84%;
 
-    --card: 20 14% 8%;
-    --card-foreground: 60 9.1% 97.8%;
-
-    --popover: 20 14% 8%;
-    --popover-foreground: 60 9.1% 97.8%;
-
-    --primary: 12 76% 61%;
-    --primary-foreground: 60 9.1% 97.8%;
-
-    --secondary: 173 58% 39%;
-    --secondary-foreground: 60 9.1% 97.8%;
-
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 12 76% 61%;
+    --radius: 1rem;
   }
 }
 
@@ -83,9 +44,32 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(120, 119, 198, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 0% 50%, rgba(43, 49, 203, 0.05) 0%, transparent 40%);
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-semibold tracking-tight;
+  
+  /* Smooth Scroll behavior if not using Lenis yet */
+  html {
+    scroll-behavior: smooth;
   }
+}
+
+/* Custom Scrollbar for "High-End" feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background)); 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--secondary)); 
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground)); 
 }
