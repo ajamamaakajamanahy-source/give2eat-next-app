@@ -1,0 +1,193 @@
+{
+  "identity": {
+    "name": "Give2Eat",
+    "archetype": "Organic & Earthy",
+    "tone": "Compassionate, Transparent, Urgent, Community-Driven",
+    "mission": "Connecting surplus food with those in need through community action."
+  },
+  "typography": {
+    "primary_font": "Manrope",
+    "secondary_font": "Fraunces",
+    "mono_font": "JetBrains Mono",
+    "usage": {
+      "headings": "Fraunces",
+      "body": "Manrope",
+      "ui_elements": "Manrope",
+      "code": "JetBrains Mono"
+    },
+    "scale": {
+      "h1": "text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]",
+      "h2": "text-4xl md:text-5xl font-semibold tracking-tight",
+      "h3": "text-2xl md:text-3xl font-medium",
+      "body_large": "text-lg md:text-xl leading-relaxed",
+      "body_base": "text-base leading-relaxed text-muted-foreground",
+      "caption": "text-sm font-medium tracking-wide uppercase text-muted-foreground"
+    }
+  },
+  "colors": {
+    "palette": {
+      "primary": {
+        "name": "Terracotta",
+        "hex": "#E76F51",
+        "tailwind": "bg-[#E76F51] text-white hover:bg-[#E76F51]/90"
+      },
+      "secondary": {
+        "name": "Sage Green",
+        "hex": "#2A9D8F",
+        "tailwind": "bg-[#2A9D8F] text-white"
+      },
+      "accent": {
+        "name": "Sunray Yellow",
+        "hex": "#E9C46A",
+        "tailwind": "bg-[#E9C46A] text-black"
+      },
+      "background": {
+        "light": "#F4F1DE",
+        "dark": "#1A1A1A"
+      },
+      "surface": {
+        "light": "#FFFFFF",
+        "dark": "#262626"
+      }
+    },
+    "theme_config": {
+      "light": {
+        "background": "0 14% 95%",
+        "foreground": "20 14% 4%",
+        "card": "0 0% 100%",
+        "card_foreground": "20 14% 4%",
+        "popover": "0 0% 100%",
+        "popover_foreground": "20 14% 4%",
+        "primary": "12 76% 61%",
+        "primary_foreground": "60 9.1% 97.8%",
+        "secondary": "173 58% 39%",
+        "secondary_foreground": "60 9.1% 97.8%",
+        "muted": "30 20% 90%",
+        "muted_foreground": "25 5% 45%",
+        "accent": "43 74% 66%",
+        "accent_foreground": "24 9.8% 10%",
+        "destructive": "0 84.2% 60.2%",
+        "destructive_foreground": "60 9.1% 97.8%",
+        "border": "30 10% 85%",
+        "input": "30 10% 85%",
+        "ring": "12 76% 61%"
+      },
+      "dark": {
+        "background": "20 14% 4%",
+        "foreground": "60 9.1% 97.8%",
+        "card": "20 14% 8%",
+        "card_foreground": "60 9.1% 97.8%",
+        "popover": "20 14% 8%",
+        "popover_foreground": "60 9.1% 97.8%",
+        "primary": "12 76% 61%",
+        "primary_foreground": "60 9.1% 97.8%",
+        "secondary": "173 58% 39%",
+        "secondary_foreground": "60 9.1% 97.8%",
+        "muted": "12 6.5% 15.1%",
+        "muted_foreground": "24 5.4% 63.9%",
+        "accent": "12 6.5% 15.1%",
+        "accent_foreground": "60 9.1% 97.8%",
+        "destructive": "0 62.8% 30.6%",
+        "destructive_foreground": "60 9.1% 97.8%",
+        "border": "12 6.5% 15.1%",
+        "input": "12 6.5% 15.1%",
+        "ring": "12 76% 61%"
+      }
+    }
+  },
+  "layout": {
+    "spacing_scale": "Generous (2x standard)",
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "grid_system": {
+      "marketing": "grid grid-cols-1 md:grid-cols-12 gap-8",
+      "dashboard": "grid grid-cols-1 md:grid-cols-4 gap-6"
+    },
+    "border_radius": {
+      "default": "rounded-xl",
+      "card": "rounded-2xl",
+      "button": "rounded-full"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "rounded-full px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1",
+      "secondary": "rounded-full px-6 py-4 text-base font-medium border-2 border-current hover:bg-secondary/10 transition-all"
+    },
+    "cards": {
+      "style": "bg-card border border-border/50 shadow-sm hover:shadow-md transition-all duration-300",
+      "padding": "p-6 md:p-8"
+    },
+    "inputs": {
+      "style": "h-12 rounded-lg border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    }
+  },
+  "visual_enhancers": {
+    "texture": "bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 fixed inset-0 pointer-events-none z-50 mix-blend-overlay",
+    "shadows": "shadow-[0_8px_30px_rgb(0,0,0,0.04)]",
+    "glassmorphism": "backdrop-blur-xl bg-white/70 border border-white/20 shadow-sm",
+    "gradients": "bg-gradient-to-br from-orange-50 to-green-50"
+  },
+  "image_urls": {
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1710092784814-4a6f158913b8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwzfHx2b2x1bnRlZXJzJTIwc2VydmluZyUyMGZvb2QlMjBjb21tdW5pdHl8ZW58MHx8fHwxNzczMTU5MTY0fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Volunteers handing out food with smiles",
+      "category": "Hero Section"
+    },
+    "community": {
+      "url": "https://images.unsplash.com/photo-1595506417208-6b298a3537b7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MjJ8MHwxfHNlYXJjaHwyfHx2b2x1bnRlZXJzJTIwc2VydmluZyUyMGZvb2QlMjBjb21tdW5pdHl8ZW58MHx8fHwxNzczMTU5MTY0fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Diverse volunteers standing together",
+      "category": "About Us"
+    },
+    "impact_1": {
+      "url": "https://images.unsplash.com/photo-1635341083388-84ca0a1733ca?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwyfHxmcmVzaCUyMHZlZ2V0YWJsZXMlMjBmb29kJTIwZG9uYXRpb24lMjBib3h8ZW58MHx8fHwxNzczMTU5MTY4fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Crate full of fresh vegetables",
+      "category": "Impact Stats"
+    },
+    "impact_2": {
+      "url": "https://images.unsplash.com/photo-1588075506694-d6ab61c85d2c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzV8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRpdmVyc2UlMjBjaGlsZHJlbiUyMGVhdGluZ3xlbnwwfHx8fDE3NzMxNTkxNzN8MA&ixlib=rb-4.1.0&q=85",
+      "alt": "Happy child eating healthy meal",
+      "category": "Success Stories"
+    },
+    "impact_3": {
+      "url": "https://images.unsplash.com/photo-1696527785449-9a05db89c7f8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTZ8MHwxfHNlYXJjaHwxfHxmcmVzaCUyMHZlZ2V0YWJsZXMlMjBmb29kJTIwZG9uYXRpb24lMjBib3h8ZW58MHx8fHwxNzczMTU5MTY4fDA&ixlib=rb-4.1.0&q=85",
+      "alt": "Organic food box donation",
+      "category": "Donation Page"
+    }
+  },
+  "instructions_to_main_agent": {
+    "general": "You are building 'Give2Eat', a modern food charity platform. The design must feel organic, trustworthy, and urgent but hopeful. Use the 'Organic & Earthy' archetype.",
+    "fonts": "Import 'Fraunces' (Variable weight) and 'Manrope' from Google Fonts. Use Fraunces for all Headings (h1-h3) and Manrope for body text and UI elements.",
+    "layout_rules": [
+      "Use the 'Bento Grid' layout for the Impact/Stats section.",
+      "Ensure the 'Donate' button is always visible (sticky header or frequent placement).",
+      "Use generous whitespace (py-20 or py-24) between sections.",
+      "Do NOT use pure black (#000000). Use #1A1A1A or #262626."
+    ],
+    "component_overrides": {
+      "Button": "Make buttons pill-shaped (rounded-full). Add a subtle hover lift animation.",
+      "Card": "Use soft borders (border-border/50) and large border-radius (rounded-2xl).",
+      "Input": "Use large, comfortable inputs with clear focus rings."
+    },
+    "animations": "Implement smooth scroll (Lenis recommended). Use 'framer-motion' for entrance animations (fade-up) on scroll."
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy",
+    "Use glass-morphism effects with backdrop filters (12-24px blur)",
+    "You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms",
+    "You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text",
+    "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style",
+    "NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯📚🎭🎬🎪🎉🎊🎁🎀🎂🍰🎈🎨🎰💰💵💳🏦💎🪙💸🤑📊📈📉💹🔢🏆🥇 etc for icons.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations. Static = dead.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Subtle grain textures, noise overlays, custom cursors, selection states, and loading animations: separates good from extraordinary.",
+    "Main agent relies on these image URLs. Missing categories (especially sponsor logos) = main agent will use placeholder text which is FORBIDDEN",
+    "Prioritize using pre-existing components from src/components/ui when applicable",
+    "Create new components that match the style and conventions of existing components when needed",
+    "Examine existing components to understand the project's component patterns before creating new ones",
+    "Components MUST use named exports (export const ComponentName = ...)",
+    "Pages MUST use default exports (export default function PageName() {...})",
+    "Use sonner for toasts. Sonner component are located in /app/src/components/ui/sonner.tsx"
+  ]
+}
