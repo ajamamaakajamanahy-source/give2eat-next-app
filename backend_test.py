@@ -131,9 +131,13 @@ def main():
     
     # Create a food post and test related operations
     post_id = tester.test_create_food_post()
+    print(f"Created post ID: {post_id}")
+    
     if post_id:
         tester.test_get_food_post_by_id(post_id)
         tester.test_unlock_food_location(post_id)
+    else:
+        print("❌ Could not create post, skipping dependent tests")
 
     # Print results
     print(f"\n📊 Tests Summary:")
