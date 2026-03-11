@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Environment, MeshTransmissionMaterial, Stars, ContactShadows } from '@react-three/drei';
-import ErrorBoundary from './ErrorBoundary';
+import { Float, MeshTransmissionMaterial, Stars, ContactShadows } from '@react-three/drei';
 
 function FloatingShape({ position, color, geometry, scale, speed }) {
   const mesh = useRef();
@@ -59,9 +58,6 @@ const Hero3D = () => {
         </group>
 
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        <ErrorBoundary fallback={null}>
-          <Environment preset="city" />
-        </ErrorBoundary>
         
         {/* Soft floor shadow */}
         <ContactShadows position={[0, -4, 0]} opacity={0.4} scale={20} blur={2.5} far={4} />
