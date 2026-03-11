@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { ArrowRight, Leaf, MapPin, Heart, ShieldCheck, Zap } from 'lucide-react';
-import Hero3D from '@/components/Hero3D'; // We'll assume this is created as planned
+import Hero3D from '@/components/Hero3D';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const Landing = () => {
   return (
@@ -12,9 +13,11 @@ const Landing = () => {
       {/* 1. IMMERSIVE HERO SECTION */}
       <section className="relative w-full h-[100vh] flex items-center justify-center overflow-hidden">
         {/* 3D Background Layer */}
-        <Suspense fallback={null}>
+        <ErrorBoundary fallback={null}>
+          <Suspense fallback={null}>
             <Hero3D />
-        </Suspense>
+          </Suspense>
+        </ErrorBoundary>
 
         {/* Hero Content Layer */}
         <div className="relative z-10 container px-4 md:px-6 text-center">
