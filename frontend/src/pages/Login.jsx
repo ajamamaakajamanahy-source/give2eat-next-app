@@ -5,12 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ const Login = () => {
     if (error) {
       setMessage(`Error: ${error.message}`);
     } else {
-      setMessage('Check your email for the magic link!');
+      setMessage(t('login.checkEmail'));
     }
     setLoading(false);
   };
@@ -41,21 +43,21 @@ const Login = () => {
       >
         <Card className="shadow-2xl border-white/10 bg-black/60 backdrop-blur-xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-4xl text-white font-serif mb-2">Welcome Back</CardTitle>
-            <CardDescription className="text-white/50">Enter your email to sign in or create an account</CardDescription>
+            <CardTitle className="text-4xl text-white font-serif mb-2">{t('login.welcomeBack')}</CardTitle>
+            <CardDescription className="text-white/50">{t('login.enterEmail')}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
               <Input
                 type="email"
-                placeholder="hello@example.com"
+                placeholder={t('login.emailPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="h-14 text-lg bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-green-500/50 rounded-xl"
               />
               <Button type="submit" className="w-full h-14 text-lg rounded-full bg-white text-black hover:bg-gray-200 transition-all font-bold" disabled={loading}>
-                {loading ? 'Sending Magic Link...' : 'Send Magic Link'}
+                {loading ? t('login.sendingMagicLink') : t('login.sendMagicLink')}
               </Button>
               {message && <p className="text-center text-sm text-green-400 mt-4">{message}</p>}
             
@@ -64,7 +66,7 @@ const Login = () => {
                   <span className="w-full border-t border-white/10" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-black px-2 text-white/30">Or continue with</span>
+                  <span className="bg-black px-2 text-white/30">{t('login.orContinueWith')}</span>
                 </div>
               </div>
 
@@ -74,7 +76,7 @@ const Login = () => {
                 className="w-full h-14 text-lg rounded-full border-white/20 text-white hover:bg-white/10"
                 onClick={handleDemoLogin}
               >
-                Demo Login (Skip Auth)
+                {t('login.demoLogin')}
               </Button>
             </form>
           </CardContent>
