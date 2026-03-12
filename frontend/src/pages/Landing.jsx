@@ -1,22 +1,19 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { ArrowRight, Leaf, MapPin, Heart, ShieldCheck, Zap } from 'lucide-react';
-import Hero3D from '@/components/Hero3D';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 const Landing = () => {
   return (
     <div className="relative w-full overflow-hidden">
-      
+
       {/* 1. IMMERSIVE HERO SECTION */}
-      <section className="relative w-full h-[100vh] flex items-center justify-center overflow-hidden">
-        {/* 3D Background Layer */}
+      <section className="relative w-full h-[100vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-zinc-900 to-black">
+        {/* Static background instead of 3D Canvas for compatibility */}
         <ErrorBoundary fallback={null}>
-          <Suspense fallback={null}>
-            <Hero3D />
-          </Suspense>
+          <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top,_rgba(34,197,94,0.4),_transparent_60%),_radial-gradient(circle_at_bottom,_rgba(59,130,246,0.3),_transparent_55%)]" />
         </ErrorBoundary>
 
         {/* Hero Content Layer */}
