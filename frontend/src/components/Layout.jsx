@@ -68,6 +68,8 @@ const Navbar = () => {
 };
 
 const Layout = () => {
+  const { t } = useLanguage();
+  
   return (
     <div className="min-h-screen flex flex-col bg-black text-white font-sans selection:bg-green-500/30 overflow-x-hidden dark">
       {/* Cinematic Noise Overlay */}
@@ -86,7 +88,7 @@ const Layout = () => {
       
       <footer className="border-t border-white/5 bg-black/50 backdrop-blur-lg py-12 relative z-10">
         <div className="max-w-7xl mx-auto px-6 text-center text-muted-foreground text-sm">
-          <p>© 2024 Give2Eat. Redefining Charity with Tech.</p>
+          <p>{t('footer.copyright')}</p>
         </div>
       </footer>
     </div>
