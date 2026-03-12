@@ -39,10 +39,16 @@ export default function RootLayout({
                   Give2Eat
                 </span>
               </div>
-              <nav className="hidden gap-6 text-sm text-white/70 md:flex">
+              <nav className="hidden items-center gap-6 text-sm text-white/70 md:flex">
                 <a href="/" className="hover:text-white">
                   Home
                 </a>
+                <button
+                  type="button"
+                  className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/80 hover:border-emerald-400 hover:text-emerald-300"
+                >
+                  മലയാളം
+                </button>
                 <a href="/donate" className="hover:text-white">
                   Donate Food
                 </a>
