@@ -125,3 +125,7 @@ frontend/node_modules/.cache/default-development/4.pack
 *.env
 *.env.*
 >>>>>>> 4fdcd4bead0955854b210599b6c5931e78a3d5bb
+-e 
+# Environment files
+*.env
+*.env.*
