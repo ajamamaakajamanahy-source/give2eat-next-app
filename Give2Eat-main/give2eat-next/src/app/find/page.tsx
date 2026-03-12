@@ -36,8 +36,12 @@ export default function FindFoodPage() {
         .order("pickup_start_time", { ascending: true });
 
       if (error) {
-        console.error(error);
-        setError("Failed to load food listings.");
+        console.error("Supabase error loading listings:", error);
+        // Show a helpful message if the table is missing or RLS blocks access
+        const message =
+          (error as any)?.message ||
+          "Failed to load food listings from Supabase.";
+        setError(message);
       } else {
         const withRating = (data || []).map((row: any) => ({
           ...row,
