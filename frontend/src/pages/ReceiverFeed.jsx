@@ -7,12 +7,14 @@ import Map from '@/components/Map';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ReceiverFeed = () => {
   const [view, setView] = useState('list');
   const [selectedFood, setSelectedFood] = useState(null);
   const [showAd, setShowAd] = useState(false);
   const [unlockedIds, setUnlockedIds] = useState([]);
+  const { t } = useLanguage();
 
   // Fetch food posts
   const { data: foods, isLoading } = useQuery({
@@ -48,8 +50,8 @@ const ReceiverFeed = () => {
     <div className="container px-4 py-8 max-w-7xl mx-auto h-[calc(100vh-80px)] relative z-20">
       <div className="flex justify-between items-center mb-8">
         <div>
-           <h1 className="text-4xl font-serif font-bold text-white mb-2">Nearby Resources</h1>
-           <p className="text-white/50">Live network activity within 15km</p>
+           <h1 className="text-4xl font-serif font-bold text-white mb-2">{t('receiver.title')}</h1>
+           <p className="text-white/50">{t('receiver.subtitle')}</p>
         </div>
         
         <div className="bg-white/10 p-1.5 rounded-full flex gap-1 border border-white/5 backdrop-blur-md">
@@ -59,7 +61,7 @@ const ReceiverFeed = () => {
             size="sm" 
             className={`rounded-full px-6 transition-all ${view === 'list' ? 'bg-white text-black shadow-lg' : 'text-white/70 hover:text-white'}`}
           >
-            <List size={16} className="mr-2" /> List
+            <List size={16} className="mr-2" /> {t('receiver.list')}
           </Button>
           <Button 
             variant="ghost"
@@ -67,7 +69,7 @@ const ReceiverFeed = () => {
             size="sm" 
             className={`rounded-full px-6 transition-all ${view === 'map' ? 'bg-white text-black shadow-lg' : 'text-white/70 hover:text-white'}`}
           >
-            <MapIcon size={16} className="mr-2" /> Map
+            <MapIcon size={16} className="mr-2" /> {t('receiver.map')}
           </Button>
         </div>
       </div>
@@ -100,7 +102,7 @@ const ReceiverFeed = () => {
                         <div>
                         <h3 className="font-bold font-serif text-lg leading-tight text-white mb-1 group-hover:text-green-400 transition-colors">{food.title}</h3>
                         <p className="text-sm text-white/50 flex items-center gap-1 font-mono">
-                            <MapPin size={12} /> {food.address || 'Unknown Location'}
+                            <MapPin size={12} /> {food.address || t('receiver.unknownLocation')}
                         </p>
                         </div>
                         {!isUnlocked ? (
@@ -109,14 +111,14 @@ const ReceiverFeed = () => {
                             className="w-full mt-3 rounded-full text-xs h-9 gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/5"
                             onClick={() => handleUnlockClick(food)}
                         >
-                            <Lock size={12} /> Unlock Location
+                            <Lock size={12} /> {t('receiver.unlockLocation')}
                         </Button>
                         ) : (
                         <Button 
                             size="sm" 
                             className="w-full mt-3 rounded-full text-xs h-9 gap-2 bg-green-500/20 text-green-400 border border-green-500/30 cursor-default hover:bg-green-500/20"
                         >
-                            <Unlock size={12} /> Revealed
+                            <Unlock size={12} /> {t('receiver.revealed')}
                         </Button>
                         )}
                     </div>
