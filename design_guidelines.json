@@ -1,0 +1,136 @@
+{
+  "brand_identity": {
+    "name": "E1 - Cosmic Luxury",
+    "persona": "The Anti-AI Designer",
+    "core_values": [
+      "Fusion over Imitation",
+      "Emotion First",
+      "Content is King",
+      "Zoom In",
+      "Negative Space",
+      "Contrast"
+    ],
+    "anti_patterns": [
+      "Purple/Teal for CTA",
+      "Inter everywhere",
+      "Center-Everything Disease",
+      "Gradient Overload"
+    ]
+  },
+  "theme": {
+    "mode": "dark",
+    "description": "A deep, immersive 'Digital Noir' aesthetic that prioritizes depth, motion, and cinematic lighting. The interface feels like a high-end cockpit or a luxury art gallery in space.",
+    "colors": {
+      "background": {
+        "default": "#030304",
+        "paper": "#0A0A0A",
+        "subtle": "#121212"
+      },
+      "primary": {
+        "default": "#E0E0E0",
+        "foreground": "#000000",
+        "hover": "#FFFFFF"
+      },
+      "secondary": {
+        "default": "#2A2A2A",
+        "foreground": "#FFFFFF"
+      },
+      "accent": {
+        "default": "#7B61FF",
+        "glow": "rgba(123, 97, 255, 0.5)"
+      },
+      "border": {
+        "default": "rgba(255, 255, 255, 0.08)",
+        "active": "rgba(255, 255, 255, 0.2)"
+      },
+      "text": {
+        "primary": "#EDEDED",
+        "secondary": "#A1A1AA",
+        "muted": "#52525B"
+      }
+    }
+  },
+  "typography": {
+    "font_family": {
+      "heading": "Fraunces, serif",
+      "body": "Manrope, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "rules": [
+      "Headings (H1-H2): Use 'Fraunces' in Italic or Light weights for editorial elegance. Tracking tight (-0.02em).",
+      "Headings (H3-H6): Use 'Fraunces' Regular. Tracking normal.",
+      "Body: Use 'Manrope'. High legibility. Leading relaxed.",
+      "Labels/Overlines: Use 'JetBrains Mono'. Uppercase, tracking wide (0.1em), text-xs."
+    ]
+  },
+  "layout": {
+    "grid_system": "The Bento Grid (Mode A: Tetris)",
+    "spacing": {
+      "container_padding": "p-6 md:p-12 lg:p-24",
+      "gap": "gap-6 md:gap-12",
+      "section_spacing": "py-32"
+    },
+    "rules": [
+      "Never center content by default. Use asymmetry.",
+      "Use 'col-span-full' for hero elements.",
+      "Leave empty grid cells for negative space.",
+      "Containers with borders MUST have internal padding (p-8)."
+    ]
+  },
+  "components": {
+    "buttons": {
+      "style": "Sharp edges or full pill. No default rounded-md.",
+      "interaction": "Scale down slightly on click (0.98). Glow on hover."
+    },
+    "cards": {
+      "style": "Glassmorphism (Crystal).",
+      "classes": "bg-black/40 backdrop-blur-xl border border-white/10 shadow-2xl"
+    },
+    "inputs": {
+      "style": "Underlined or Minimalist Box.",
+      "classes": "bg-transparent border-b border-white/20 focus:border-white transition-colors rounded-none px-0"
+    }
+  },
+  "motion": {
+    "library": "framer-motion",
+    "principles": [
+      "Everything must enter with a stagger.",
+      "Scroll-triggered parallax is mandatory for images.",
+      "Hover states must be magnetic or fluid."
+    ],
+    "3d_strategy": {
+      "engine": "react-three-fiber",
+      "usage": "Hero backgrounds, floating artifacts, interactive product viewers.",
+      "fallback": "Use high-res abstract textures if WebGL fails."
+    }
+  },
+  "assets": {
+    "images": [
+      {
+        "category": "background_texture",
+        "url": "https://images.unsplash.com/photo-1762258344624-52d8c3b74c66?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTB8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRhcmslMjAzZCUyMHRleHR1cmV8ZW58MHx8fHwxNzczMTYxNjY0fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Dark cylindrical abstract texture for tech/data sections."
+      },
+      {
+        "category": "background_flow",
+        "url": "https://images.unsplash.com/photo-1694261321131-8157dce8e288?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTB8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGRhcmslMjAzZCUyMHRleHR1cmV8ZW58MHx8fHwxNzczMTYxNjY0fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Wavy lines dark texture for flow/motion sections."
+      }
+    ],
+    "icons": "lucide-react"
+  },
+  "implementation_steps": [
+    "1. Install 3D deps: `yarn add three @react-three/fiber @react-three/drei`",
+    "2. Update `tailwind.config.js` to include the new color palette and extend font families if needed (already present).",
+    "3. Create a `Layout` component that enforces the dark theme and smooth scrolling (Lenis recommended).",
+    "4. Build the `Hero` section using a R3F Canvas.",
+    "5. Apply the 'Glassmorphism' utility classes to all cards."
+  ],
+  "universal_guidelines": [
+    "Do not use gradients for text unless it's a very subtle shine.",
+    "Avoid 'Inter' for headings. Use 'Fraunces'.",
+    "Ensure all interactive elements have `data-testid`.",
+    "Use `sonner` for toasts.",
+    "Do not use `transition: all`."
+  ]
+}
