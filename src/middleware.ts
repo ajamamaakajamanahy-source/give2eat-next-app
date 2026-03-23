@@ -1,38 +1,25 @@
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
-      },
-    }
+  // If env vars are missing, just pass through
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return NextResponse.next();
+  }
+
+  // Get the auth token from cookies
+  const authCookie = request.cookies.getAll().find(
+    (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token")
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const hasSession = !!authCookie?.value;
 
+  // Protect dashboard and donate routes
   if (
-    !user &&
+    !hasSession &&
     (request.nextUrl.pathname.startsWith("/dashboard") ||
       request.nextUrl.pathname.startsWith("/donate"))
   ) {
@@ -41,7 +28,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  return supabaseResponse;
+  return NextResponse.next();
 }
 
 export const config = {

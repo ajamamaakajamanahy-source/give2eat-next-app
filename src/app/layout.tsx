@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import AuthButton from "../components/AuthButton";
 
@@ -26,26 +26,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Check for auth cookie to determine session state
   const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll()
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            )
-          } catch { }
-        },
-      },
-    }
+  const authCookie = cookieStore.getAll().find(
+    (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token")
   );
-  const { data: { session } } = await supabase.auth.getSession();
+  const session = authCookie ? true : null;
   return (
     <html lang="en">
       <body
