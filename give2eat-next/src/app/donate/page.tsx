@@ -2,6 +2,12 @@
 
 import { FormEvent, useState } from "react";
 import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
+import dynamic from "next/dynamic";
+
+const LocationPicker = dynamic(() => import("@/components/LocationPicker"), { 
+  ssr: false,
+  loading: () => <div className="h-[300px] w-full bg-zinc-900/50 animate-pulse rounded-2xl border border-white/5" />
+});
 
 type FoodType = "veg" | "non-veg";
 
@@ -9,6 +15,7 @@ export default function DonatePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [location, setLocation] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,7 +30,6 @@ export default function DonatePage() {
     const food_type = String(formData.get("food_type") || "veg") as FoodType;
     const quantity = Number(formData.get("quantity") || 0);
     const description = String(formData.get("description") || "").trim();
-    const location = String(formData.get("location") || "").trim();
     const pickup_start_time = String(formData.get("pickup_start_time") || "");
     const pickup_end_time = String(formData.get("pickup_end_time") || "");
     const expiry_time = String(formData.get("expiry_time") || "");
@@ -132,11 +138,9 @@ export default function DonatePage() {
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <label className="text-sm font-medium">
-              Quantity (plates or kg) *
-            </label>
+            <label className="text-sm font-medium">Quantity (plates or kg) *</label>
             <input
               name="quantity"
               type="number"
@@ -147,13 +151,16 @@ export default function DonatePage() {
               required
             />
           </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Location *</label>
+          <div className="space-y-4">
+            <label className="text-sm font-medium">Pickup Location *</label>
+            <LocationPicker onAddressSelect={(addr) => setLocation(addr)} />
             <input
               name="location"
               type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className="w-full rounded-lg border border-white/20 bg-black/40 px-3 py-2 text-sm outline-none focus:border-emerald-400"
-              placeholder="e.g. Koramangala, Bengaluru"
+              placeholder="Address will appear here, or type manually"
               required
             />
           </div>
