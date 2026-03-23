@@ -1,60 +1,63 @@
+"use client";
+
+import { useLanguage } from "@/context/LanguageContext";
+
 export default function Home() {
+  const { t } = useLanguage();
+
   return (
     <div className="relative isolate overflow-hidden">
       <section className="relative mx-auto flex min-h-[80vh] max-w-6xl flex-col items-center justify-center gap-10 px-6 py-16 text-center md:flex-row md:items-start md:text-left">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(34,197,94,0.15),_transparent_60%),_radial-gradient(circle_at_bottom,_rgba(59,130,246,0.2),_transparent_60%)]" />
         <div className="flex-1 space-y-6">
           <p className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-1 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300">
-            Zero Waste. Zero Hunger.
+            {t("welcome")}
           </p>
           <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">
-            Give2Eat connects{" "}
+            {t("hero_title_part1")}{" "}
             <span className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
-              extra food
+              {t("hero_title_part2")}
             </span>{" "}
-            with people who need it.
+            {t("hero_title_part3")}
           </h1>
           <p className="max-w-xl text-base text-white/70 md:text-lg">
-            A realtime food donation network where donors can list surplus food
-            in seconds and receivers can safely find nearby meals before they
-            expire.
+            {t("hero_desc")}
           </p>
           <div className="flex flex-col gap-4 sm:flex-row">
             <a
               href="/donate"
               className="inline-flex flex-1 items-center justify-center rounded-full bg-emerald-500 px-8 py-3 text-sm font-semibold text-black shadow-lg shadow-emerald-500/40 transition hover:bg-emerald-400"
             >
-              Donate Food
+              {t("donate")}
             </a>
             <a
               href="/find"
               className="inline-flex flex-1 items-center justify-center rounded-full border border-white/15 bg-white/5 px-8 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
             >
-              Find Food
+              {t("find")}
             </a>
           </div>
           <div className="mt-4 grid max-w-xl grid-cols-2 gap-4 text-left text-xs text-white/60 md:text-sm">
             <div>
-              <p className="font-semibold text-white">For Donors</p>
-              <p>Share fresh surplus food in under a minute.</p>
+              <p className="font-semibold text-white">{t("for_donors")}</p>
+              <p>{t("for_donors_desc")}</p>
             </div>
             <div>
-              <p className="font-semibold text-white">For Receivers</p>
-              <p>Discover verified, nearby food with safe pickup windows.</p>
+              <p className="font-semibold text-white">{t("for_receivers")}</p>
+              <p>{t("for_receivers_desc")}</p>
             </div>
           </div>
         </div>
 
         <div className="mt-10 flex flex-1 flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur md:mt-0">
-          <h2 className="text-lg font-semibold">Live Safety Disclaimer</h2>
+          <h2 className="text-lg font-semibold">{t("safety_disclaimer")}</h2>
           <p className="text-sm text-white/70">
-            This platform only connects food donors and recipients. Food safety
-            and hygiene are the responsibility of the donor.
+            {t("safety_desc")}
           </p>
           <ul className="mt-4 space-y-2 text-sm text-white/70">
-            <li>• Food must be freshly prepared and unexpired.</li>
-            <li>• Proper storage and temperature must be maintained.</li>
-            <li>• Donors are responsible for accurate descriptions.</li>
+            <li>• {t("safety_rule1")}</li>
+            <li>• {t("safety_rule2")}</li>
+            <li>• {t("safety_rule3")}</li>
           </ul>
         </div>
       </section>
