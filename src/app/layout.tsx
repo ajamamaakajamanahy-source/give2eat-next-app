@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import AuthButton from "../components/AuthButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,11 +21,13 @@ export const metadata: Metadata = {
     "Give2Eat connects donors and receivers to reduce food waste through safe, real-time food sharing.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createServerComponentClient({ cookies });
+  const { data: { session } } = await supabase.auth.getSession();
   return (
     <html lang="en">
       <body
@@ -39,7 +44,7 @@ export default function RootLayout({
                   Give2Eat
                 </span>
               </div>
-              <nav className="hidden gap-6 text-sm text-white/70 md:flex">
+              <nav className="hidden items-center gap-6 text-sm text-white/70 md:flex">
                 <a href="/" className="hover:text-white">
                   Home
                 </a>
@@ -49,12 +54,17 @@ export default function RootLayout({
                 <a href="/find" className="hover:text-white">
                   Find Food
                 </a>
-                <a href="/dashboard/donor" className="hover:text-white">
-                  Donor Dashboard
-                </a>
-                <a href="/dashboard/receiver" className="hover:text-white">
-                  Receiver Dashboard
-                </a>
+                {session && (
+                  <>
+                    <a href="/dashboard/donor" className="hover:text-white">
+                      Donor Dashboard
+                    </a>
+                    <a href="/dashboard/receiver" className="hover:text-white">
+                      Receiver Dashboard
+                    </a>
+                  </>
+                )}
+                <AuthButton session={session} />
               </nav>
             </div>
           </header>
