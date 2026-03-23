@@ -5,14 +5,16 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function AuthButton({ session }: { session: any }) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabase = supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : null;
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
+    if (!supabase) return;
     setIsLoading(true);
     await supabase.auth.signOut();
     router.refresh();

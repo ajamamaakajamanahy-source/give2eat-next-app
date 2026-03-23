@@ -12,12 +12,17 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   
   const router = useRouter();
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabase = supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : null;
 
   const handleAuth = async (e: React.FormEvent) => {
+    if (!supabase) {
+      setError("Supabase configuration is missing.");
+      return;
+    }
     e.preventDefault();
     setLoading(true);
     setError(null);
