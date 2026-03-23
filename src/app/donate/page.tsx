@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
 
 type FoodType = "veg" | "non-veg";
 
@@ -60,8 +60,11 @@ export default function DonatePage() {
     }
 
     try {
-      if (!supabase) {
-        throw new Error("Supabase is not configured. Please add your credentials to .env.local");
+      if (!isSupabaseConfigured) {
+        setSuccess("Demo Mode: Food listing 'created' successfully (Simulated)!");
+        form.reset();
+        setLoading(false);
+        return;
       }
       const { error: insertError } = await supabase.from("food_listings").insert({
         donor_id: null, // TODO: replace with authenticated user id

@@ -1,22 +1,49 @@
-import { supabase } from "@/lib/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
 
 export const dynamic = "force-dynamic";
 
-async function loadDonorListings() {
-  if (!supabase) {
-    return [];
+const MOCK_DONOR_LISTINGS = [
+  {
+    id: "mock-d1",
+    food_name: "Fresh Garden Salad",
+    quantity: 5,
+    pickup_start_time: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
+    pickup_end_time: new Date(Date.now() + 1000 * 60 * 60 * 4).toISOString(),
+    expiry_time: new Date(Date.now() + 1000 * 60 * 60 * 8).toISOString(),
+    status: "active",
+  },
+  {
+    id: "mock-d2",
+    food_name: "Apple Pie (2 portions)",
+    quantity: 2,
+    pickup_start_time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+    pickup_end_time: new Date(Date.now() - 1000 * 60 * 60 * 20).toISOString(),
+    expiry_time: new Date(Date.now() - 1000 * 60 * 60 * 18).toISOString(),
+    status: "expired",
   }
-  const { data, error } = await supabase
-    .from("food_listings")
-    .select(
-      "id, food_name, quantity, pickup_start_time, pickup_end_time, expiry_time, status"
-    )
-    .order("pickup_start_time", { ascending: false });
+];
 
-  if (error) {
-    throw error;
+async function loadDonorListings() {
+  if (!isSupabaseConfigured) {
+    return MOCK_DONOR_LISTINGS;
   }
-  return data || [];
+  
+  try {
+    const { data, error } = await supabase
+      .from("food_listings")
+      .select(
+        "id, food_name, quantity, pickup_start_time, pickup_end_time, expiry_time, status"
+      )
+      .order("pickup_start_time", { ascending: false });
+
+    if (error) {
+      console.error("Error loading donor listings:", error);
+      return MOCK_DONOR_LISTINGS; // Fallback to mock on error for better DX
+    }
+    return data || [];
+  } catch (err) {
+    return MOCK_DONOR_LISTINGS;
+  }
 }
 
 export default async function DonorDashboardPage() {
@@ -35,6 +62,11 @@ export default async function DonorDashboardPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 space-y-8">
+      {!isSupabaseConfigured && (
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-xs text-amber-300">
+          Demo Mode: Showing mock data because Supabase is not configured.
+        </div>
+      )}
       <div>
         <h1 className="text-3xl font-semibold tracking-tight">
           Donor Dashboard
@@ -118,4 +150,3 @@ export default async function DonorDashboardPage() {
     </div>
   );
 }
-

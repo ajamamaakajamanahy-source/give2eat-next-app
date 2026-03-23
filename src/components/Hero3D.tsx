@@ -5,6 +5,26 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sphere, useTexture, Center, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 
+function BackgroundFood({ position, texturePath, delay = 0 }: { position: [number, number, number], texturePath: string, delay?: number }) {
+  const meshRef = useRef<THREE.Mesh>(null!);
+  const texture = useTexture(texturePath);
+
+  useFrame((state) => {
+    const time = state.clock.getElapsedTime() + delay;
+    if (meshRef.current) {
+      meshRef.current.position.y = position[1] + Math.sin(time) * 0.15;
+      meshRef.current.rotation.z = Math.sin(time / 2) * 0.1;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} position={position} scale={0.4}>
+      <planeGeometry args={[4, 4]} />
+      <meshBasicMaterial map={texture} transparent={true} opacity={0.6} />
+    </mesh>
+  );
+}
+
 function RealisticFood() {
   const meshRef = useRef<THREE.Mesh>(null!);
   const texture = useTexture("/images/hero-food.png");
@@ -18,12 +38,16 @@ function RealisticFood() {
   });
 
   return (
-    <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
-      <mesh ref={meshRef}>
-        <planeGeometry args={[4, 4]} />
-        <meshBasicMaterial map={texture} transparent={true} />
-      </mesh>
-    </Float>
+    <>
+      <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
+        <mesh ref={meshRef}>
+          <planeGeometry args={[4, 4]} />
+          <meshBasicMaterial map={texture} transparent={true} />
+        </mesh>
+      </Float>
+      <BackgroundFood position={[-3, 2, -2]} texturePath="/images/about-food.png" delay={0} />
+      <BackgroundFood position={[3, -2, -2]} texturePath="/images/about-food.png" delay={Math.PI} />
+    </>
   );
 }
 
