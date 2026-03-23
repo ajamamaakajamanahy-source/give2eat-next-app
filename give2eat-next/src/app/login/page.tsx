@@ -19,13 +19,21 @@ export default function LoginPage() {
     : null;
 
   const handleAuth = async (e: React.FormEvent) => {
-    if (!supabase) {
-      setError("Supabase configuration is missing.");
-      return;
-    }
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    // Mock Authentication for Demo Mode
+    if (!supabase) {
+      setTimeout(() => {
+        // Set a mock cookie that matches the pattern in layout.tsx
+        document.cookie = "sb-mock-auth-token=true; path=/; max-age=3600";
+        router.push("/dashboard/donor");
+        router.refresh();
+        setLoading(false);
+      }, 1000);
+      return;
+    }
 
     const authOpts = { email, password };
 

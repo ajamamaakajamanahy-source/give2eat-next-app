@@ -14,9 +14,12 @@ export default function AuthButton({ session }: { session: any }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
-    if (!supabase) return;
     setIsLoading(true);
-    await supabase.auth.signOut();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+    // Manually clear mock cookie regardless of Supabase config
+    document.cookie = "sb-mock-auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     router.refresh();
     setIsLoading(false);
   };
