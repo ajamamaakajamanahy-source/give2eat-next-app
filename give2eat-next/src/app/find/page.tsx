@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
 
 type Listing = {
   id: string;
@@ -15,6 +15,42 @@ type Listing = {
   donor_rating: number | null;
 };
 
+const MOCK_LISTINGS: Listing[] = [
+  {
+    id: "mock-1",
+    food_name: "Fresh Garden Salad",
+    quantity: 5,
+    location: "Kochi, Kerala",
+    pickup_start_time: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
+    pickup_end_time: new Date(Date.now() + 1000 * 60 * 60 * 4).toISOString(),
+    expiry_time: new Date(Date.now() + 1000 * 60 * 60 * 8).toISOString(),
+    status: "active",
+    donor_rating: 4.8,
+  },
+  {
+    id: "mock-2",
+    food_name: "Homemade Vegetable Biryani",
+    quantity: 8,
+    location: "Ernakulam",
+    pickup_start_time: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+    pickup_end_time: new Date(Date.now() + 1000 * 60 * 60 * 2).toISOString(),
+    expiry_time: new Date(Date.now() + 1000 * 60 * 60 * 6).toISOString(),
+    status: "active",
+    donor_rating: 4.5,
+  },
+  {
+    id: "mock-3",
+    food_name: "Fresh Fruit Basket",
+    quantity: 3,
+    location: "Aluva",
+    pickup_start_time: new Date(Date.now() + 1000 * 60 * 60 * 2).toISOString(),
+    pickup_end_time: new Date(Date.now() + 1000 * 60 * 60 * 5).toISOString(),
+    expiry_time: new Date(Date.now() + 1000 * 60 * 60 * 12).toISOString(),
+    status: "active",
+    donor_rating: 5.0,
+  }
+];
+
 export default function FindFoodPage() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,28 +58,38 @@ export default function FindFoodPage() {
 
   useEffect(() => {
     async function loadListings() {
+      if (!isSupabaseConfigured) {
+        console.log("Supabase not configured. Loading mock listings.");
+        setListings(MOCK_LISTINGS);
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       const nowIso = new Date().toISOString();
 
-      const { data, error } = await supabase
-        .from("food_listings")
-        .select(
-          "id, food_name, quantity, location, pickup_start_time, pickup_end_time, expiry_time, status"
-        )
-        .gte("expiry_time", nowIso)
-        .eq("status", "active")
-        .order("pickup_start_time", { ascending: true });
+      try {
+        const { data, error } = await supabase
+          .from("food_listings")
+          .select(
+            "id, food_name, quantity, location, pickup_start_time, pickup_end_time, expiry_time, status"
+          )
+          .gte("expiry_time", nowIso)
+          .eq("status", "active")
+          .order("pickup_start_time", { ascending: true });
 
-      if (error) {
-        console.error(error);
-        setError("Failed to load food listings.");
-      } else {
-        const withRating = (data || []).map((row: any) => ({
-          ...row,
-          donor_rating: null,
-        }));
-        setListings(withRating);
+        if (error) {
+          console.error("Supabase error loading listings:", error);
+          setError(error.message || "Failed to load food listings.");
+        } else {
+          const withRating = (data || []).map((row: any) => ({
+            ...row,
+            donor_rating: null,
+          }));
+          setListings(withRating);
+        }
+      } catch (err) {
+         setError("An unexpected error occurred while loading listings.");
       }
       setLoading(false);
     }
@@ -53,6 +99,11 @@ export default function FindFoodPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
+      {!isSupabaseConfigured && (
+        <div className="mb-6 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs text-emerald-300">
+          Demo Mode: Showing mock listings because Supabase is not configured.
+        </div>
+      )}
       <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Find Food</h1>
@@ -66,7 +117,7 @@ export default function FindFoodPage() {
       {loading && (
         <p className="text-sm text-white/70">Loading listings…</p>
       )}
-      {error && (
+      {error && !loading && listings.length === 0 && (
         <p className="text-sm font-medium text-red-400">{error}</p>
       )}
 
@@ -74,7 +125,7 @@ export default function FindFoodPage() {
         {listings.map((listing) => (
           <ListingCard key={listing.id} listing={listing} />
         ))}
-        {!loading && !error && listings.length === 0 && (
+        {!loading && listings.length === 0 && (
           <p className="text-sm text-white/60">
             No active listings right now. Check back soon.
           </p>
@@ -101,7 +152,7 @@ function ListingCard({ listing }: { listing: Listing }) {
     : "Available";
 
   return (
-    <article className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 text-sm backdrop-blur">
+    <article className="flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 text-sm backdrop-blur transition-all hover:border-emerald-500/30">
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold">{listing.food_name}</h2>
@@ -138,11 +189,10 @@ function ListingCard({ listing }: { listing: Listing }) {
       <button
         type="button"
         disabled={expired}
-        className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-sky-500 px-4 py-2 text-xs font-semibold text-black shadow-md shadow-sky-500/40 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-white/50"
+        className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-black shadow-md shadow-emerald-500/40 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-white/50"
       >
         {expired ? "Expired – Not Available" : "Request Food"}
       </button>
     </article>
   );
 }
-
