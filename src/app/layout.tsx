@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { LanguageProvider } from "../context/LanguageContext";
 import Header from "../components/Header";
 import PageTransition from "../components/PageTransition";
+import { isDemoMode } from "../lib/supabaseClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,9 @@ export default async function RootLayout({
   const authCookie = cookieStore.getAll().find(
     (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token")
   );
-  const session = authCookie ? true : null;
+  
+  // Auto-grant session in Demo Mode for easy testing
+  const session = isDemoMode ? true : (authCookie ? true : null);
 
   return (
     <html lang="en">

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import { isDemoMode } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -14,6 +15,17 @@ export default function LoginPage() {
   const router = useRouter();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const isDemo = !supabaseUrl || supabaseUrl.includes("your-project-url");
+
+  useEffect(() => {
+    if (isDemoMode) {
+        // Auto-grant and redirect in Demo Mode
+        document.cookie = "sb-mock-auth-token=true; path=/; max-age=3600";
+        router.push("/dashboard/donor");
+        router.refresh();
+    }
+  }, [router]);
+
   const supabase = supabaseUrl && supabaseAnonKey
     ? createClient(supabaseUrl, supabaseAnonKey)
     : null;

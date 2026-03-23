@@ -5,8 +5,10 @@ export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // If env vars are missing, just pass through
-  if (!supabaseUrl || !supabaseAnonKey) {
+  // If env vars are missing or placeholders, just pass through (Demo Mode)
+  const isDemo = !supabaseUrl || !supabaseAnonKey || supabaseUrl.includes("your-project-url");
+  
+  if (isDemo) {
     return NextResponse.next();
   }
 

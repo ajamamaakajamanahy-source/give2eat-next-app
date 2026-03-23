@@ -11,6 +11,8 @@ export const isSupabaseConfigured =
   !!supabaseAnonKey && 
   supabaseAnonKey !== "your-anon-key";
 
+export const isDemoMode = !isSupabaseConfigured;
+
 export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
   : (null as any);
