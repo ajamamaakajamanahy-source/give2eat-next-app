@@ -4,6 +4,7 @@ import "./globals.css";
 import { cookies } from "next/headers";
 import { LanguageProvider } from "../context/LanguageContext";
 import Header from "../components/Header";
+import PageTransition from "../components/PageTransition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,8 +43,10 @@ export default async function RootLayout({
           <div className="min-h-screen flex flex-col">
             <Header session={session} />
 
-            <main className="flex-1 bg-gradient-to-b from-black via-zinc-950 to-black">
-              {children}
+            <main className="flex-1 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
+              <PageTransition>
+                {children}
+              </PageTransition>
             </main>
 
             <footer className="border-t border-white/10 bg-black">
