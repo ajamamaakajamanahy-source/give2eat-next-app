@@ -91,11 +91,14 @@ export default function FindFoodPage() {
 
         if (error) {
           setError(error.message);
+          // Fallback to mock on error too
+          setListings(MOCK_LISTINGS);
         } else {
           setListings((data || []).map((row: any) => ({ ...row, donor_rating: null })));
         }
       } catch (err) {
-         setError("Failed to fetch listings. Please check your connection.");
+         setError("Failed to fetch listings. Reverting to Demo Mode.");
+         setListings(MOCK_LISTINGS);
       }
       setLoading(false);
     }
