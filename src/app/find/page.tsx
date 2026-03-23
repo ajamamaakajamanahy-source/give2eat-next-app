@@ -22,6 +22,11 @@ export default function FindFoodPage() {
 
   useEffect(() => {
     async function loadListings() {
+      if (!supabase) {
+        setError("Supabase is not configured. Listings cannot be loaded.");
+        setLoading(false);
+        return;
+      }
       setLoading(true);
       setError(null);
       const nowIso = new Date().toISOString();

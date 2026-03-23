@@ -3,6 +3,9 @@ import { supabase } from "@/lib/supabaseClient";
 export const dynamic = "force-dynamic";
 
 async function loadDonorListings() {
+  if (!supabase) {
+    return [];
+  }
   const { data, error } = await supabase
     .from("food_listings")
     .select(

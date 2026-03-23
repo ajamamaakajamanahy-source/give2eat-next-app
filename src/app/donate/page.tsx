@@ -60,6 +60,9 @@ export default function DonatePage() {
     }
 
     try {
+      if (!supabase) {
+        throw new Error("Supabase is not configured. Please add your credentials to .env.local");
+      }
       const { error: insertError } = await supabase.from("food_listings").insert({
         donor_id: null, // TODO: replace with authenticated user id
         food_name,
