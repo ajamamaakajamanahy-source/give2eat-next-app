@@ -1,5 +1,6 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import Hero3D from "@/components/Hero3D";
@@ -7,6 +8,7 @@ import Food3D from "@/components/Food3D";
 import ImpactSection from "@/components/ImpactSection";
 
 export default function Home() {
+  redirect("/find");
   const { t } = useLanguage();
 
   const fadeInUp = {

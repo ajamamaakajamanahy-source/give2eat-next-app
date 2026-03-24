@@ -19,7 +19,8 @@ export async function middleware(request: NextRequest) {
 
   const hasSession = !!authCookie?.value;
 
-  // Protect dashboard and donate routes
+  // Protect dashboard and donate routes (DISABLED - allow anonymous access)
+  /*
   if (
     !hasSession &&
     (request.nextUrl.pathname.startsWith("/dashboard") ||
@@ -29,6 +30,7 @@ export async function middleware(request: NextRequest) {
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
+  */
 
   return NextResponse.next();
 }

@@ -36,9 +36,5 @@ export default function AuthButton({ session }: { session: any }) {
     );
   }
 
-  return (
-    <a href="/login" className="px-4 py-2 font-medium text-black bg-white rounded-lg hover:bg-zinc-200 transition-colors">
-      Login / Sign Up
-    </a>
-  );
+  return null;
 }
