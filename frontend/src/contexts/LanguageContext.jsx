@@ -6,14 +6,24 @@ const translations = { en, ml };
 
 const LanguageContext = createContext();
 
-export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState(() => {
-    // Check localStorage for saved preference, default to 'en'
+// Safe localStorage access
+const getStoredLanguage = () => {
+  try {
     return localStorage.getItem('give2eat_language') || 'en';
-  });
+  } catch {
+    return 'en';
+  }
+};
+
+export const LanguageProvider = ({ children }) => {
+  const [language, setLanguage] = useState(getStoredLanguage);
 
   useEffect(() => {
-    localStorage.setItem('give2eat_language', language);
+    try {
+      localStorage.setItem('give2eat_language', language);
+    } catch (e) {
+      console.warn('localStorage not available');
+    }
     // Update document language attribute for accessibility
     document.documentElement.lang = language;
   }, [language]);
