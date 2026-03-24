@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import AuthButton from "./AuthButton";
 
 export default function Header({ session }: { session: any }) {
   const { t, language, setLanguage } = useLanguage();
@@ -27,19 +26,6 @@ export default function Header({ session }: { session: any }) {
           <Link href="/donate" className="hover:text-white transition-colors">
             {t("donate")}
           </Link>
-          <Link href="/find" className="hover:text-white transition-colors">
-            {t("find")}
-          </Link>
-          {session && (
-            <>
-              <Link href="/dashboard/donor" className="hover:text-white transition-colors">
-                {t("donor_dashboard")}
-              </Link>
-              <Link href="/dashboard/receiver" className="hover:text-white transition-colors">
-                {t("receiver_dashboard")}
-              </Link>
-            </>
-          )}
           
           <div className="flex items-center gap-2 ml-4 border-l border-white/10 pl-4">
             <button
@@ -59,8 +45,6 @@ export default function Header({ session }: { session: any }) {
               മല
             </button>
           </div>
-
-          <AuthButton session={session} />
         </nav>
       </div>
     </header>

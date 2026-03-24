@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cookies } from "next/headers";
 import { LanguageProvider } from "../context/LanguageContext";
 import Header from "../components/Header";
 import PageTransition from "../components/PageTransition";
-import { isDemoMode } from "../lib/supabaseClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,15 +26,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Check for auth cookie to determine session state
-  const cookieStore = await cookies();
-  const authCookie = cookieStore.getAll().find(
-    (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token")
-  );
-  
-  // Auto-grant session in Demo Mode for easy testing
-  const session = isDemoMode ? true : (authCookie ? true : null);
-
   return (
     <html lang="en">
       <body
@@ -44,7 +33,7 @@ export default async function RootLayout({
       >
         <LanguageProvider>
           <div className="min-h-screen flex flex-col">
-            <Header session={session} />
+            <Header session={null} />
 
             <main className="flex-1 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
               <PageTransition>
