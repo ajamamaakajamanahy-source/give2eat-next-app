@@ -12,6 +12,11 @@ export const updateSession = async (request: NextRequest) => {
   const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
   const anonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "").trim();
 
+  // If Supabase is not configured, skip auth and let all routes through
+  if (!url || !url.startsWith("https://") || url.includes("your-project-url") || !anonKey || anonKey === "your-anon-key") {
+    return response;
+  }
+
   const supabase = createServerClient(url, anonKey, {
 
       cookies: {

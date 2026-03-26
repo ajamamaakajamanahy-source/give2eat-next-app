@@ -1,4 +1,4 @@
-import { createClient as createSupabaseClient } from "@/utils/supabase/client";
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").trim();
 const supabaseAnonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "").trim();
@@ -12,5 +12,6 @@ export const isSupabaseConfigured =
 
 export const isDemoMode = !isSupabaseConfigured;
 
-// Backward compatibility wrapper
-export const supabase = isSupabaseConfigured ? createSupabaseClient() : (null as any);
+export const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : (null as any);

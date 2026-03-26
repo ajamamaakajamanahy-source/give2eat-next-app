@@ -28,8 +28,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  let session = null;
+
+  const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
+  const anonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "").trim();
+  const isConfigured = url.startsWith("https://") && !url.includes("your-project-url") && !!anonKey && anonKey !== "your-anon-key";
+
+  if (isConfigured) {
+    try {
+      const supabase = await createClient();
+      const { data } = await supabase.auth.getSession();
+      session = data?.session ?? null;
+    } catch (e) {
+      // Supabase not reachable — continue without session
+    }
+  }
 
   return (
     <html lang="en">
