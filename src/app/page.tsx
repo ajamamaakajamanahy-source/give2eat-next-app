@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
+import { createClient } from "@/utils/supabase/client";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -68,7 +68,13 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeListingId, setActiveListingId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('map');
+  const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
+  const supabase = createClient();
+
+  // Simple configuration check
+  const isSupabaseConfigured = !!process.env.NEXT_PUBLIC_SUPABASE_URL && 
+    !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-project-url");
+
 
   useEffect(() => {
     async function loadListings() {

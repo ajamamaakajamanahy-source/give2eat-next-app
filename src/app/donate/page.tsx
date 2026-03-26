@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { supabase, isSupabaseConfigured } from "@/lib/supabaseClient";
+import { createClient } from "@/utils/supabase/client";
 import dynamic from "next/dynamic";
 
 const LocationPicker = dynamic(() => import("@/components/LocationPicker"), { 
@@ -16,6 +16,7 @@ export default function DonatePage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [location, setLocation] = useState("");
+  const supabase = createClient();
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -66,14 +67,16 @@ export default function DonatePage() {
     }
 
     try {
-      if (!isSupabaseConfigured) {
-        setSuccess("Demo Mode: Food listing 'created' successfully (Simulated)!");
-        form.reset();
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        setError("You must be signed in to create a listing.");
         setLoading(false);
         return;
       }
+
       const { error: insertError } = await supabase.from("food_listings").insert({
-        donor_id: null, // TODO: replace with authenticated user id
+        donor_id: user.id,
         food_name,
         food_type,
         quantity,
@@ -85,6 +88,7 @@ export default function DonatePage() {
         expiry_time: expiry.toISOString(),
         status: "active",
       });
+
 
       if (insertError) {
         throw insertError;

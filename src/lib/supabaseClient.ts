@@ -1,9 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createSupabaseClient } from "@/utils/supabase/client";
 
 const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").trim();
 const supabaseAnonKey = (process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "").trim();
 
-// Harden check to catch placeholders like "your-project-url"
 export const isSupabaseConfigured = 
   !!supabaseUrl && 
   supabaseUrl.startsWith("https://") && 
@@ -13,6 +12,5 @@ export const isSupabaseConfigured =
 
 export const isDemoMode = !isSupabaseConfigured;
 
-export const supabase = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : (null as any);
+// Backward compatibility wrapper
+export const supabase = isSupabaseConfigured ? createSupabaseClient() : (null as any);

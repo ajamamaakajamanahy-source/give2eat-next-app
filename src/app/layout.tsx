@@ -4,8 +4,10 @@ import "./globals.css";
 import { LanguageProvider } from "../context/LanguageContext";
 import Header from "../components/Header";
 import PageTransition from "../components/PageTransition";
+import { createClient } from "@/utils/supabase/server";
 
 const geistSans = Geist({
+
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
@@ -26,6 +28,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+
   return (
     <html lang="en">
       <body
@@ -33,7 +38,8 @@ export default async function RootLayout({
       >
         <LanguageProvider>
           <div className="min-h-screen flex flex-col">
-            <Header session={null} />
+            <Header session={session} />
+
 
             <main className="flex-1 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
               <PageTransition>
