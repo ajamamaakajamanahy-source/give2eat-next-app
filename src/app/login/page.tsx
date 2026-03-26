@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoginPage() {
@@ -78,9 +79,16 @@ export default function LoginPage() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", damping: 15 }}
-              className="w-14 h-14 mx-auto mb-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center"
+              className="w-16 h-16 mx-auto mb-6 relative"
             >
-              <span className="text-emerald-400 font-black text-lg">G2</span>
+              <Image
+                src="/logo.png"
+                alt="Give2Eat Logo"
+                width={64}
+                height={64}
+                className="object-contain"
+                priority
+              />
             </motion.div>
 
             <AnimatePresence mode="wait">

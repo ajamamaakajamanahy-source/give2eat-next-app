@@ -21,6 +21,13 @@ export const metadata: Metadata = {
   title: "Give2Eat – Reduce Food Waste",
   description:
     "Give2Eat connects donors and receivers to reduce food waste through safe, real-time food sharing.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default async function RootLayout({

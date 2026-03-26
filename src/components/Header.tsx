@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import AuthButton from "./AuthButton";
@@ -38,13 +39,20 @@ export default function Header({ session }: { session: any }) {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-3 group">
-          <motion.span
+          <motion.div
             whileHover={{ scale: 1.1, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
-            className="h-9 w-9 rounded-xl bg-emerald-500 flex items-center justify-center text-sm font-black text-black shadow-lg shadow-emerald-500/25 group-hover:shadow-emerald-500/40 transition-shadow"
+            className="relative h-9 w-9 shrink-0"
           >
-            G2
-          </motion.span>
+            <Image
+              src="/logo.png"
+              alt="Give2Eat Logo"
+              width={36}
+              height={36}
+              className="object-contain"
+              priority
+            />
+          </motion.div>
           <span className="text-lg font-semibold tracking-tight text-white">
             Give2Eat
           </span>
