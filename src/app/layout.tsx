@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "../context/LanguageContext";
-import Header from "../components/Header";
-import PageTransition from "../components/PageTransition";
+import { LanguageProvider } from "@/context/LanguageContext";
+import Header from "@/components/Header";
+import PageTransition from "@/components/PageTransition";
+import ClientLayout from "@/components/ClientLayout";
 import { createClient } from "@/utils/supabase/server";
 
 const geistSans = Geist({
-
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
@@ -47,39 +47,40 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#030304] text-white`}
       >
         <LanguageProvider>
-          <div className="min-h-screen flex flex-col">
-            <Header session={session} />
+          <ClientLayout>
+            <div className="min-h-screen flex flex-col relative">
+              <Header session={session} />
 
+              <main className="flex-1 relative overflow-hidden">
+                <PageTransition>
+                  {children}
+                </PageTransition>
+              </main>
 
-            <main className="flex-1 bg-gradient-to-b from-black via-zinc-950 to-black overflow-hidden">
-              <PageTransition>
-                {children}
-              </PageTransition>
-            </main>
-
-            <footer className="border-t border-white/10 bg-black">
-              <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-6 md:flex-row md:items-center md:justify-between text-sm text-white/60">
-                <p>© {new Date().getFullYear()} Give2Eat. All rights reserved.</p>
-                <div className="flex flex-wrap gap-4">
-                  <a href="/legal/privacy-policy" className="hover:text-white">
-                    Privacy Policy
-                  </a>
-                  <a href="/legal/terms" className="hover:text-white">
-                    Terms &amp; Conditions
-                  </a>
-                  <a href="/legal/food-safety" className="hover:text-white">
-                    Food Safety Disclaimer
-                  </a>
-                  <a href="/legal/community-guidelines" className="hover:text-white">
-                    Community Guidelines
-                  </a>
+              <footer className="relative border-t border-white/5 bg-[#030304]">
+                <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-8 md:flex-row md:items-center md:justify-between text-sm text-white/40">
+                  <p className="font-medium">© {new Date().getFullYear()} Give2Eat. All rights reserved.</p>
+                  <div className="flex flex-wrap gap-6">
+                    <a href="/legal/privacy-policy" className="hover:text-emerald-400 transition-colors duration-300">
+                      Privacy Policy
+                    </a>
+                    <a href="/legal/terms" className="hover:text-emerald-400 transition-colors duration-300">
+                      Terms &amp; Conditions
+                    </a>
+                    <a href="/legal/food-safety" className="hover:text-emerald-400 transition-colors duration-300">
+                      Food Safety Disclaimer
+                    </a>
+                    <a href="/legal/community-guidelines" className="hover:text-emerald-400 transition-colors duration-300">
+                      Community Guidelines
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </footer>
-          </div>
+              </footer>
+            </div>
+          </ClientLayout>
         </LanguageProvider>
       </body>
     </html>
