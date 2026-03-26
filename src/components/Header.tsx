@@ -3,18 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import AuthButton from "./AuthButton";
 
 export default function Header({ session }: { session: any }) {
   const { t, language, setLanguage } = useLanguage();
-  const router = useRouter();
-  const supabase = createClient();
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
-  };
 
   return (
     <header className="border-b border-white/10 bg-black/80 backdrop-blur sticky top-0 z-50">
@@ -35,21 +27,20 @@ export default function Header({ session }: { session: any }) {
           <Link href="/donate" className="hover:text-white transition-colors">
             {t("donate")}
           </Link>
-          
-          {session ? (
-            <button 
-              onClick={handleSignOut}
-              className="text-white/70 hover:text-white transition-colors"
-            >
-              {t("sign_out") || "Sign Out"}
-            </button>
-          ) : (
-            <Link href="/login" className="text-white/70 hover:text-white transition-colors">
-              {t("login_signup")}
-            </Link>
+          <Link href="/find" className="hover:text-white transition-colors">
+            {t("find")}
+          </Link>
+          {session && (
+            <>
+              <Link href="/dashboard/donor" className="hover:text-white transition-colors">
+                {t("donor_dashboard")}
+              </Link>
+              <Link href="/dashboard/receiver" className="hover:text-white transition-colors">
+                {t("receiver_dashboard")}
+              </Link>
+            </>
           )}
-
-
+          
           <div className="flex items-center gap-2 ml-4 border-l border-white/10 pl-4">
             <button
               onClick={() => setLanguage("en")}
@@ -68,6 +59,8 @@ export default function Header({ session }: { session: any }) {
               മല
             </button>
           </div>
+
+          <AuthButton session={session} />
         </nav>
       </div>
     </header>
